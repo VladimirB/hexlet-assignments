@@ -14,7 +14,7 @@ public class App {
         if (port != null) {
             return Integer.valueOf(port);
         }
-        return 5000;
+        return 4972;
     }
 
     public static Tomcat getApp(int port) {
@@ -26,8 +26,8 @@ public class App {
         Context ctx = app.addContext("", new File(".").getAbsolutePath());
 
         // BEGIN
-        app.addServlet(ctx, WelcomeServlet.NAME, new WelcomeServlet());
-        ctx.addServletMappingDecoded("/", WelcomeServlet.NAME);
+        app.addServlet(ctx, WelcomeServlet.class.getSimpleName(), new WelcomeServlet());
+        ctx.addServletMappingDecoded("", WelcomeServlet.class.getSimpleName());
         // END
 
         return app;
