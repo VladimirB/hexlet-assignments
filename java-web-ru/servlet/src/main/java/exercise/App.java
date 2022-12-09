@@ -1,9 +1,9 @@
 package exercise;
 
 import exercise.servlet.WelcomeServlet;
+import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
-import org.apache.catalina.Context;
 
 import java.io.File;
 
@@ -14,7 +14,7 @@ public class App {
         if (port != null) {
             return Integer.valueOf(port);
         }
-        return 4972;
+        return 5000;
     }
 
     public static Tomcat getApp(int port) {
