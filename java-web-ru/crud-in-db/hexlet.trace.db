@@ -1,0 +1,6 @@
+2023-02-08 13:33:50 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "delete"; SQL statement:
+DELETE FROM articles WHERE id=? [22018-200]
+2023-02-08 13:37:40 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "delete"; SQL statement:
+DELETE FROM articles WHERE id=? [22018-200]
