@@ -50,13 +50,9 @@ public class ArticlesController {
     @PatchMapping("/{id}")
     public String updateArticle(@PathVariable("id") long articleId, @RequestBody ArticleDto articleDto) {
         var article = articleRepository.findById(articleId);
-        var category = article.getCategory();
-
-        category.setId(articleDto.category().id());
 
         article.setName(articleDto.name());
         article.setBody(articleDto.body());
-        article.setCategory(category);
 
         articleRepository.save(article);
         return "OK";
