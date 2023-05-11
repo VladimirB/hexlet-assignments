@@ -31,6 +31,8 @@ public class CourseController {
     @GetMapping("/{id}/previous")
     public Iterable<Course> getPrevious(@PathVariable("id") long id) {
         var course = courseRepository.findById(id);
+        if (course.getPath() == null) return List.of();
+        
         var ids = getCourseIdsFromPath(course.getPath());
         return courseRepository.findAllById(ids);
     }
