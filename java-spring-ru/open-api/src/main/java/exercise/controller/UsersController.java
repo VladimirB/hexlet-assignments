@@ -1,27 +1,16 @@
 package exercise.controller;
 
-import exercise.model.User;
-import exercise.model.UserDto;
-import exercise.repository.UserRepository;
 import exercise.UserNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.http.HttpStatus;
-
-// Импортируем аннотации, которые помогут задокументировать API
+import exercise.model.User;
+import exercise.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -93,28 +82,24 @@ public class UsersController {
             @ApiResponse(responseCode = "404", description = "User with that id not found")
     })
     @PatchMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(
+    public ResponseEntity<User> updateUser(
             @Parameter(description = "Id of user to be updated")
             @PathVariable("id") long id,
 
             @Parameter(description = "Values to update the user")
-            @RequestBody UserDto userDto) {
+            @RequestBody User userBody) {
         if (!userRepository.existsById(id)) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
 
         var user = userRepository.findById(id);
         user.ifPresent(updatedUser -> {
-            updatedUser.setFirstName(userDto.firstName());
-            updatedUser.setLastName(userDto.lastName());
-            updatedUser.setEmail(userDto.email());
+            updatedUser.setFirstName(userBody.getFirstName());
+            updatedUser.setLastName(userBody.getLastName());
+            updatedUser.setEmail(userBody.getEmail());
             userRepository.save(updatedUser);
         });
 
-        return new ResponseEntity<>(toUserDto(userRepository.findById(id).get()), HttpStatus.OK);
-    }
-
-    private UserDto toUserDto(User user) {
-        return new UserDto(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail());
+        return new ResponseEntity<>(userRepository.findById(id).get(), HttpStatus.OK);
     }
 }
